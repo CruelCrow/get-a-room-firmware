@@ -54,6 +54,11 @@ void setupPir() {
 unsigned short currentItteration = 0;
 void loop()
 {
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    setupWiFi();
+  }
+  
   bool isPresentNow = digitalRead(PIR_STATUS);
   isHumanPresentStatistics[currentItteration] = isPresentNow;
   Serial.print(isPresentNow ? "!" : ".");
@@ -75,15 +80,17 @@ void reportToServer()
   Serial.println();
   digitalWrite(ESP8266_LED, _isHumanPresent);
 
-  Serial.print("Reporting to server");
-  Serial.println();
+  Serial.println("Reporting to server");
 
-  http.begin("http://jsonplaceholder.typicode.com/users/1");
-  int httpCode = http.GET();
+  http.begin(API_URL);
+  http.addHeader("Content-Type", "application/json");
+  String payload = "{\"id\": \"" + String(API_SENSOR_ID) + "\", \"is_occupied\": " + (_isHumanPresent ? "true" : "false") + "}";
+  Serial.println(payload);
+  int httpCode = http.POST(payload);
   if (httpCode > 0) {
-    String payload = http.getString();
+    String responseBody = http.getString();
     Serial.println(httpCode, DEC);
-    Serial.println(payload);
+    Serial.println(responseBody);
 
   }
   http.end();
