@@ -18,5 +18,5 @@
 #define WIFI_MODE_WEB_AUTH 2
 
 #define WIFI_MODE WIFI_MODE_PASS_AUTH
-#define WIFI_SSID "CatsFi"
-#define WIFI_PASSWORD "siwh3818"
+#define WIFI_SSID "SSID"
+#define WIFI_PASSWORD "PASS"
