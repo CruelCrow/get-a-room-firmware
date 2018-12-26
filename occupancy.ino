@@ -84,7 +84,7 @@ void reportToServer()
 
   http.begin(API_URL);
   http.addHeader("Content-Type", "application/json");
-  String payload = "{\"id\": \"" + String(API_SENSOR_ID) + "\", \"is_occupied\": " + (_isHumanPresent ? "true" : "false") + "}";
+  String payload = "{\"id\": " + String(API_ROOM_ID) + ", \"name\": \"" + String(API_ROOM_NAME) + "\", \"isOccupied\": " + (_isHumanPresent ? "true" : "false") + "}";
   Serial.println(payload);
   int httpCode = http.POST(payload);
   if (httpCode > 0) {
